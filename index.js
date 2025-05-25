@@ -7,6 +7,7 @@ import cors from 'cors';
 
 const app = express();
 const PORT = 3000;
+app.use(cors());
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,7 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Route
 app.use('/proverbs', proverb);
 app.use('/proverbs', proverb);
-app.use(cors());
+
 
 //Root rout
 app.get('/', (req,res)=>{
