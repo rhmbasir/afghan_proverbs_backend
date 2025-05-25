@@ -9,18 +9,18 @@ router.get('/', (req, res) => {
     const { category, search } = req.query;
     let proverbs = readProverbs();
 
-    // Filter by category
     if (category) {
       proverbs = proverbs.filter((p) =>
         p.category?.toLowerCase() === category.toLowerCase()
       );
     }
 
-    // Search by keyword in text
     if (search) {
       const keyword = search.toLowerCase();
       proverbs = proverbs.filter((p) =>
-        p.text?.toLowerCase().includes(keyword)
+        p.textDari?.toLowerCase().includes(keyword) ||
+        p.textPashto?.toLowerCase().includes(keyword) ||
+        p.translationEn?.toLowerCase().includes(keyword)
       );
     }
 
@@ -57,17 +57,22 @@ router.get('/:id', (req, res) => {
 
 // POST a new proverb
 router.post('/', (req, res) => {
-  const { text, language, category } = req.body;
-  if (!text || !language) {
-    return res.status(400).json({ error: 'Missing required fields: text and language.' });
+  const { textDari, textPashto, translationEn, meaning, category } = req.body;
+
+  if (!textDari  || !textPashto || !translationEn || !meaning || !category) {
+    return res.status(400).json({
+      error: 'Missing required fields: textDari, textPashto, translationEn, meaning, and category.',
+    });
   }
 
   const proverbs = readProverbs();
   const newProverb = {
-    id: Date.now(),
-    text,
-    language,
-    category: category || 'general',
+    id: Date.now(), // simple ID generator
+    textDari,
+    textPashto,
+    translationEn,
+    meaning,
+    category,
   };
 
   proverbs.push(newProverb);
