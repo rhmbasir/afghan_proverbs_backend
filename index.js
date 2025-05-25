@@ -2,6 +2,8 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import proverb from './routes/proverbs.js';
+import cors from 'cors';
+
 
 const app = express();
 const PORT = 3000;
@@ -19,6 +21,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Route
 app.use('/proverbs', proverb);
 app.use('/proverbs', proverb);
+app.use(cors());
 
 //Root rout
 app.get('/', (req,res)=>{
